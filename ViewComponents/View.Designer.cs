@@ -30,6 +30,7 @@
         {
             this.ucTotalComanderView1 = new TotalCOmmanderLab03.UCTotalComanderView();
             this.ucTotalComanderView2 = new TotalCOmmanderLab03.UCTotalComanderView();
+            this.ucCopyDeleteCut1 = new TotalCOmmanderLab03.UCCopyDeleteCut();
             this.SuspendLayout();
             // 
             // ucTotalComanderView1
@@ -48,11 +49,19 @@
             this.ucTotalComanderView2.Size = new System.Drawing.Size(367, 393);
             this.ucTotalComanderView2.TabIndex = 1;
             // 
+            // ucCopyDeleteCut1
+            // 
+            this.ucCopyDeleteCut1.Location = new System.Drawing.Point(13, 413);
+            this.ucCopyDeleteCut1.Name = "ucCopyDeleteCut1";
+            this.ucCopyDeleteCut1.Size = new System.Drawing.Size(352, 54);
+            //this.ucCopyDeleteCut1.TabIndex = 2;
+            // 
             // MainWIndow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(769, 409);
+            this.ClientSize = new System.Drawing.Size(759, 477);
+            this.Controls.Add(this.ucCopyDeleteCut1);
             this.Controls.Add(this.ucTotalComanderView2);
             this.Controls.Add(this.ucTotalComanderView1);
             this.Name = "MainWIndow";
@@ -65,6 +74,7 @@
 
         private UCTotalComanderView ucTotalComanderView1;
         private UCTotalComanderView ucTotalComanderView2;
+        private UCCopyDeleteCut ucCopyDeleteCut1;
     }
 }
 

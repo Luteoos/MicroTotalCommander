@@ -31,20 +31,12 @@ namespace TotalCOmmanderLab03
             
             InitializeComponent();
 
-            //THREADING
-            //Thread MThread = new Thread(this.ThreadTest);
-            //MThread.Start(this);
             
 
 
         }
 
-       /* public void ThreadTest(object data)
-        {
-           
-            Debug.WriteLine("THREAD TEST"+data);
-        }
-        */
+  
         public string CurrentPath//update textbox
         {
             get

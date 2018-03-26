@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace TotalCOmmanderLab03
 {
     //generic component of T count how mayn T components controls sended object
-    internal class ComponentCount<T>
+    internal class ComponentCount<T,U>
     {
         private Control owner;
         public ComponentCount(Control owner)
@@ -19,9 +19,14 @@ namespace TotalCOmmanderLab03
         public short AmountOf()
         {
             short amount = 0;
+            
             foreach (T instance in owner.Controls)
             {
-                amount++;
+                if(instance is U)
+                {
+                    amount++;
+                }
+                
             }
             return amount;
         }

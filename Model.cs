@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Threading;
+
 
 
 namespace TotalCOmmanderLab03
@@ -15,8 +17,9 @@ namespace TotalCOmmanderLab03
         
         
         private string[] currentpath, selectedpath;
-        private int last;//keps int from which object was last selected item
-        private int LastSelected { get => last; set => last = value; }
+
+        private int LastSelected;
+       // private bool flagCopy=false;
 
         #region events
         //(which UC haveto get it, path to directory, dirs in directory files in drectory)
@@ -61,14 +64,17 @@ namespace TotalCOmmanderLab03
         
 
         public void CurrentPathModify(int which,string path)//(path to update, which UCTotal..)
+            //DOROBIC FLAGE BOOL[] CZY NIE ZMIENILISMY WIDOKU PODCZAS KOPIOWANIA
         {
             Debug.WriteLine("Tu model");
             if(path.Contains(@":\"))
             {
+                //LastSelected = -1;
                 selectedpath[which] = "";//clears selected path
                 currentpath[which] = "";
                 currentpath[which] = path;
-                DirUpdate(which,currentpath[which],System.IO.Directory.GetDirectories(currentpath[which]), System.IO.Directory.GetFiles(currentpath[which]));
+                DirUpdate(which,currentpath[which],System.IO.Directory.GetDirectories(currentpath[which]),
+                    System.IO.Directory.GetFiles(currentpath[which]));
                 //tu pobiranie file i dirs i wysyalanie eventem do widoku
             }
             else
@@ -105,5 +111,54 @@ namespace TotalCOmmanderLab03
 
             Debug.WriteLine("Model selectedd: " + selectedpath[which] + " " + which);
         }
+
+        private  void Copy(object data)//copies to next path
+        {
+            ModelData Data = data as ModelData;
+                
+                if (Data.GetPath(0) != Data.GetPath(1) )
+                {
+                    try
+                    {
+                    Debug.WriteLine("COPY");
+                    File.Copy(Data.GetPath(Data.GetEnum(0)), Data.GetPath(Data.GetEnum(1)));
+                    Debug.WriteLine("COPY COMPLETED");
+                    
+                    }catch(Exception e)
+                    {
+                        Debug.WriteLine("Exception copy " + e.Message);
+                    }
+                }
+        }
+
+        public void ControlCopy()
+        {
+            Debug.WriteLine("ControlCopy" );
+          
+                
+                int Target = (LastSelected + 1) % currentpath.Length;
+                ModelData Data = new ModelData(selectedpath[LastSelected],
+                    currentpath[Target] + Path.GetFileName(selectedpath[LastSelected]), LastSelected, Target);
+
+                Thread Copy = new Thread(this.Copy) { IsBackground = true };
+                Copy.Start(Data);
+               
+            
+            
+
+        }
+
+       /* public int[] CopyReloadData()//[source,target]
+        {
+            int[] tabdata = new int[2];
+             tabdata[1]= (LastSelected + 1) % currentpath.Length; 
+             tabdata[0] = LastSelected;
+            return tabdata;
+
+        }
+        public string EHH(int i)
+        {
+            return currentpath[i];
+        }*/
     }
 }

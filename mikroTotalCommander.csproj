@@ -49,6 +49,13 @@
     <Compile Include="Generics\GenericComponentCount.cs" />
     <Compile Include="Interfaces\IModel.cs" />
     <Compile Include="Interfaces\IPathProvider.cs" />
+    <Compile Include="DataObjects\ModelData.cs" />
+    <Compile Include="ViewComponents\UCCopyDeleteCut.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ViewComponents\UCCopyDeleteCut.Designer.cs">
+      <DependentUpon>UCCopyDeleteCut.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewComponents\View.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,6 +71,9 @@
     <Compile Include="ViewComponents\UCTotalComanderView.Designer.cs">
       <DependentUpon>UCTotalComanderView.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ViewComponents\UCCopyDeleteCut.resx">
+      <DependentUpon>UCCopyDeleteCut.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ViewComponents\View.resx">
       <DependentUpon>View.cs</DependentUpon>
     </EmbeddedResource>

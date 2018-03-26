@@ -11,6 +11,7 @@ using System.IO;
 using System.Diagnostics;
 
 
+
 namespace TotalCOmmanderLab03
 {
 
@@ -18,6 +19,8 @@ namespace TotalCOmmanderLab03
     partial class MainWIndow : Form
     {
         //List<UCTotalComanderView> ListControls;
+        public delegate void evonClickUCButton(short which);
+        public event evonClickUCButton onClickButtonUCC;
 
         public delegate void evCurrentPathUpdate(int which, string path);
         public event evCurrentPathUpdate CurrentPathUpdate;
@@ -36,22 +39,33 @@ namespace TotalCOmmanderLab03
             // Debug.WriteLine(ComponentCollection.ReferenceEquals(ucTotalComanderView1, ucTotalComanderView2));
 
             //AADD METHOD HERE TO COUNT ALL UCTOTALCOMMANDERVIEW OBJECTS AND INITIALIZE SAME AMOUNT IN MODEL
-            foreach (UCTotalComanderView uctcomponent in this.Controls)
+            foreach (UserControl comp in this.Controls)
             {
+                
+                if (comp is UCTotalComanderView)
+                {
+                    var uctcomponent = comp as UCTotalComanderView;
+                    uctcomponent.triggerReload += this.Reload;
+                    uctcomponent.ReloadDrivers += this.DriversReload;
+                    uctcomponent.ReSelect += this.ReSelect;
+                }
+                else if (comp is UCCopyDeleteCut)
+                {
+                    UCCopyDeleteCut uccComponent = comp as UCCopyDeleteCut;
+                    uccComponent.onClick += this.onClick;
+
+                }
                 //Debug.WriteLine("Component initial {0}  {1}", uctcomponent.GetHashCode(), uctcomponent.GetType());
-                uctcomponent.triggerReload += this.Reload;
-                uctcomponent.ReloadDrivers += this.DriversReload;
-                uctcomponent.ReSelect += this.ReSelect;
 
-
-               
 
             }
 
-            //ucTotalComanderView1.CurrentPath = @"c:\";//@ znak porzucenia= bez znakow specjalnuch
-
         }
 
+        void onClick(short which)
+        {
+            onClickButtonUCC(which);
+        }
 
         private void ReSelect(int TabIndex, string path)
         {
@@ -82,9 +96,9 @@ namespace TotalCOmmanderLab03
 
         }
 
-        public short AmountOf<type>()
+        public short AmountOf<type,typeOfInputter>()
         {
-            ComponentCount<type> CompAmount = new ComponentCount<type>(this);
+            ComponentCount<type,typeOfInputter> CompAmount = new ComponentCount<type,typeOfInputter>(this);
             return CompAmount.AmountOf();
         }
 

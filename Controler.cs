@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
+using System.Windows;
+using System.Windows.Forms;
 
 
 namespace TotalCOmmanderLab03
@@ -20,12 +22,22 @@ namespace TotalCOmmanderLab03
             this.view = a;
             this.model = b;
             
-            model.AmountPaths(view.AmountOf<IPathProvier>());//sets amount of total possible paths provided by view
+            model.AmountPaths(view.AmountOf<UserControl,IPathProvier>());//sets amount of total possible paths provided by view
 
             model.DirUpdate += this.DirUpdate;
             view.CurrentPathUpdate += this.CurrentPathChange;
             view.DriverUpdate += this.DriverUpdate;
             view.SelectedPathUpdate += this.SelectedPathUpdate;
+            view.onClickButtonUCC += this.ButtonDecide;
+
+            
+
+            //nowa funkcja
+          //  Thread CopyThread = new Thread(model.Copy);
+          //  CopyThread.Start();
+           // if(CopyThread.ThreadState==0)
+           
+            
 
             }
          void CurrentPathChange(int which,string newpath)//Change path current, string with path, int which objects UC sende it)
@@ -36,6 +48,7 @@ namespace TotalCOmmanderLab03
 
         void SelectedPathUpdate(int which,string path)
         {
+         
             model.SelectedPathModify(which, path);
         }
 
@@ -50,6 +63,18 @@ namespace TotalCOmmanderLab03
         {
             //tu view i funkcja update dir
             view.UpdateView(which, path, dir, files);
+        }
+        void ButtonDecide(short which)
+        {
+            switch(which)
+            {
+                case 0:
+                    model.ControlCopy();                   
+                    break;
+            }
+           
+           
+            
         }
         
 
