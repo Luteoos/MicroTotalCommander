@@ -54,13 +54,13 @@
             this.ucCopyDeleteCut1.Location = new System.Drawing.Point(13, 413);
             this.ucCopyDeleteCut1.Name = "ucCopyDeleteCut1";
             this.ucCopyDeleteCut1.Size = new System.Drawing.Size(352, 54);
-            //this.ucCopyDeleteCut1.TabIndex = 2;
+            //this.ucCopyDeleteCut1.TabIndex = 3;
             // 
             // MainWIndow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(759, 477);
+            this.ClientSize = new System.Drawing.Size(764, 474);
             this.Controls.Add(this.ucCopyDeleteCut1);
             this.Controls.Add(this.ucTotalComanderView2);
             this.Controls.Add(this.ucTotalComanderView1);

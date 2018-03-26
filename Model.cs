@@ -7,12 +7,13 @@ using System.IO;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Threading;
+using System.ComponentModel;
 
 
 
 namespace TotalCOmmanderLab03
 {
-     class Model: IModel
+     class Model:  BackgroundWorker, IModel
     {
         
         
@@ -25,6 +26,9 @@ namespace TotalCOmmanderLab03
         //(which UC haveto get it, path to directory, dirs in directory files in drectory)
         public delegate void evDirUpdate(int whichUC, string path,string[] a, string[] b);
         public event evDirUpdate DirUpdate;
+
+        //public delegate void evAfterCopyReload();
+        //public event evAfterCopyReload ReloadAfterOperation;
 
 
 #endregion
@@ -93,6 +97,7 @@ namespace TotalCOmmanderLab03
                     {
                         Debug.WriteLine("model excpetion opening file" + currentpath[which]);
                         Process.Start(currentpath[which] + path);
+                        
                     }catch(System.ComponentModel.Win32Exception)
                     {
                         MessageBox.Show("Drive not Found, choose another Drive","Error");
@@ -114,6 +119,7 @@ namespace TotalCOmmanderLab03
 
         private  void Copy(object data)//copies to next path
         {
+            this.RunWorkerAsync();
             ModelData Data = data as ModelData;
                 
                 if (Data.GetPath(0) != Data.GetPath(1) )
@@ -122,7 +128,7 @@ namespace TotalCOmmanderLab03
                     {
                     Debug.WriteLine("COPY");
                     File.Copy(Data.GetPath(Data.GetEnum(0)), Data.GetPath(Data.GetEnum(1)));
-                    Debug.WriteLine("COPY COMPLETED");
+                    //Debug.WriteLine("COPY COMPLETED");
                     
                     }catch(Exception e)
                     {

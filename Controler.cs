@@ -7,6 +7,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Forms;
+using System.ComponentModel;
 
 
 namespace TotalCOmmanderLab03
@@ -29,6 +30,7 @@ namespace TotalCOmmanderLab03
             view.DriverUpdate += this.DriverUpdate;
             view.SelectedPathUpdate += this.SelectedPathUpdate;
             view.onClickButtonUCC += this.ButtonDecide;
+            model.RunWorkerCompleted += this.TEST;
 
             
 
@@ -44,6 +46,11 @@ namespace TotalCOmmanderLab03
         {
             model.CurrentPathModify(which ,newpath);
 
+        }
+
+        void TEST(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Debug.WriteLine("DZIALA INVOKEEEE" + e.Result);
         }
 
         void SelectedPathUpdate(int which,string path)

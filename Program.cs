@@ -15,10 +15,9 @@ namespace TotalCOmmanderLab03
         [STAThread]
         static void Main()
         {
-            
-            Model model = new Model();
             Application.SetCompatibleTextRenderingDefault(false);
-
+            Model model = new Model();
+            //Application.SetCompatibleTextRenderingDefault(false);
             MainWIndow view = new MainWIndow();
 
             Controler controler = new Controler(ref view,ref model);
