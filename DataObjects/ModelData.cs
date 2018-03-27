@@ -10,8 +10,9 @@ namespace TotalCOmmanderLab03
     {
         private string[] Paths;
         private int[] Enum;
+        bool[]  bMustReload; 
 
-        public ModelData(string source,string target, int src, int trgt)
+        public ModelData(string source,string target, int src, int trgt )
         {
             Paths = new string[2];
             Enum = new int[2];
@@ -19,6 +20,7 @@ namespace TotalCOmmanderLab03
             Paths[1] = target;
             Enum[0] = src;
             Enum[1] = trgt;
+           // this.bMustReload = bMustReload;
         }
         public string GetPath(int i)
         {

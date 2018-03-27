@@ -18,7 +18,7 @@ namespace TotalCOmmanderLab03
         
         
         private string[] currentpath, selectedpath;
-
+        public bool test;
         private int LastSelected;
        // private bool flagCopy=false;
 
@@ -126,15 +126,22 @@ namespace TotalCOmmanderLab03
                 {
                     try
                     {
-                    Debug.WriteLine("COPY");
-                    File.Copy(Data.GetPath(Data.GetEnum(0)), Data.GetPath(Data.GetEnum(1)));
-                    //Debug.WriteLine("COPY COMPLETED");
-                    
-                    }catch(Exception e)
+                    Debug.WriteLine("COPY TEST BOOL"+this.test);
+                    this.test = !this.test;
+                    Debug.WriteLine("COPY TEST2 BOOL" + this.test);
+
+                    File.Copy(Data.GetPath(0), Data.GetPath(1));
+
+                    Debug.WriteLine("COPY COMPLETED");
+
+                }
+                catch(Exception e)
                     {
                         Debug.WriteLine("Exception copy " + e.Message);
                     }
+                
                 }
+            
         }
 
         public void ControlCopy()
@@ -148,6 +155,7 @@ namespace TotalCOmmanderLab03
 
                 Thread Copy = new Thread(this.Copy) { IsBackground = true };
                 Copy.Start(Data);
+            
                
             
             

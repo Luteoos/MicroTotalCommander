@@ -50,6 +50,7 @@ namespace TotalCOmmanderLab03
 
         void TEST(object sender, RunWorkerCompletedEventArgs e)
         {
+            //Debug.WriteLine("COPY TEST3 BOOL" + model.test);
             Debug.WriteLine("DZIALA INVOKEEEE" + e.Result);
         }
 
