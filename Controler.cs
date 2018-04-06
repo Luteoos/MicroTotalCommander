@@ -12,45 +12,56 @@ using System.ComponentModel;
 
 namespace TotalCOmmanderLab03
 {
-     class Controler
+    class Controler
     {
         MainWIndow view;
         Model model;
 
-        
+
         public Controler(ref MainWIndow a, ref Model b)
-            {
+        {
             this.view = a;
             this.model = b;
-            
-            model.AmountPaths(view.AmountOf<UserControl,IPathProvier>());//sets amount of total possible paths provided by view
+
+            model.AmountPaths(view.AmountOf<UserControl, IPathProvier>());//sets amount of total possible paths provided by view
 
             model.DirUpdate += this.DirUpdate;
             view.CurrentPathUpdate += this.CurrentPathChange;
             view.DriverUpdate += this.DriverUpdate;
             view.SelectedPathUpdate += this.SelectedPathUpdate;
             view.onClickButtonUCC += this.ButtonDecide;
-            model.RunWorkerCompleted += this.TEST;
+            model.RunWorkerCompleted += this.ThreadEnd;
+            model.ErrorSender += this.ErrorManager;
 
             
+
+
 
             //nowa funkcja
-          //  Thread CopyThread = new Thread(model.Copy);
-          //  CopyThread.Start();
-           // if(CopyThread.ThreadState==0)
-           
-            
+            //  Thread CopyThread = new Thread(model.Copy);
+            //  CopyThread.Start();
+            // if(CopyThread.ThreadState==0)
 
-            }
-         void CurrentPathChange(int which,string newpath)//Change path current, string with path, int which objects UC sende it)
+
+
+        }
+      
+        
+        void ErrorManager(string e)
+        {
+            view.ErrorShow(e);
+        }
+
+        void CurrentPathChange(int which,string newpath)//Change path current, string with path, int which objects UC sende it)
         {
             model.CurrentPathModify(which ,newpath);
 
         }
 
-        void TEST(object sender, RunWorkerCompletedEventArgs e)
+        void ThreadEnd(object sender, RunWorkerCompletedEventArgs e)
         {
             //Debug.WriteLine("COPY TEST3 BOOL" + model.test);
+           
             Debug.WriteLine("DZIALA INVOKEEEE" + e.Result);
         }
 

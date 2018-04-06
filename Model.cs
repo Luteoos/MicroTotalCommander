@@ -18,7 +18,7 @@ namespace TotalCOmmanderLab03
         
         
         private string[] currentpath, selectedpath;
-        public bool test;
+        private bool bIsNewDir=true;
         private int LastSelected;
        // private bool flagCopy=false;
 
@@ -26,6 +26,8 @@ namespace TotalCOmmanderLab03
         //(which UC haveto get it, path to directory, dirs in directory files in drectory)
         public delegate void evDirUpdate(int whichUC, string path,string[] a, string[] b);
         public event evDirUpdate DirUpdate;
+
+        public event  Action<string> ErrorSender;
 
         //public delegate void evAfterCopyReload();
         //public event evAfterCopyReload ReloadAfterOperation;
@@ -36,6 +38,7 @@ namespace TotalCOmmanderLab03
         
         public Model()
         {    
+           
         }
 
         public void AmountPaths(short amount)
@@ -70,15 +73,18 @@ namespace TotalCOmmanderLab03
         public void CurrentPathModify(int which,string path)//(path to update, which UCTotal..)
             //DOROBIC FLAGE BOOL[] CZY NIE ZMIENILISMY WIDOKU PODCZAS KOPIOWANIA
         {
-            Debug.WriteLine("Tu model");
+            //Debug.WriteLine("Tu model");
+
             if(path.Contains(@":\"))
             {
                 //LastSelected = -1;
                 selectedpath[which] = "";//clears selected path
                 currentpath[which] = "";
                 currentpath[which] = path;
+               // Debug.WriteLine("LOCK TEST" + currentpath[0]);
                 DirUpdate(which,currentpath[which],System.IO.Directory.GetDirectories(currentpath[which]),
                     System.IO.Directory.GetFiles(currentpath[which]));
+               
                 //tu pobiranie file i dirs i wysyalanie eventem do widoku
             }
             else
@@ -86,9 +92,12 @@ namespace TotalCOmmanderLab03
                 try
                 {
 
-                    DirUpdate(which,currentpath[which]+path+@"\",System.IO.Directory.GetDirectories(currentpath[which]+path), System.IO.Directory.GetFiles(currentpath[which] + path));
-                    currentpath[which] += path + @"\";//tu potem wczytanie plikow w tej lokacji i wyslanie ich do view
+                    DirUpdate(which,currentpath[which]+path+@"\",
+                        System.IO.Directory.GetDirectories(currentpath[which]+path), 
+                        System.IO.Directory.GetFiles(currentpath[which] + path));
 
+                    bIsNewDir = true;
+                    currentpath[which] += path + @"\";//tu potem wczytanie plikow w tej lokacji i wyslanie ich do view
                     selectedpath[which] = "";//clears selected after getting into dir
                 }
                 catch(IOException)
@@ -97,10 +106,12 @@ namespace TotalCOmmanderLab03
                     {
                         Debug.WriteLine("model excpetion opening file" + currentpath[which]);
                         Process.Start(currentpath[which] + path);
+                        bIsNewDir = false;
                         
                     }catch(System.ComponentModel.Win32Exception)
                     {
-                        MessageBox.Show("Drive not Found, choose another Drive","Error");
+                        ErrorSender("Driver not found!");
+                        //MessageBox.Show("Drive not Found, choose another Drive","Error");
                     }
                     
                 }
@@ -113,48 +124,55 @@ namespace TotalCOmmanderLab03
         {
             selectedpath[which] = currentpath[which] + path;
             LastSelected=which;
+            bIsNewDir = false;
 
             Debug.WriteLine("Model selectedd: " + selectedpath[which] + " " + which);
         }
 
         private  void Copy(object data)//copies to next path
         {
+           /* lock (this.currentpath[0])
+            {
+                Debug.WriteLine("LOCK");
+                Thread.Sleep(100000000);
+            }*/
             this.RunWorkerAsync();
             ModelData Data = data as ModelData;
-                
-                if (Data.GetPath(0) != Data.GetPath(1) )
+            if (Data.GetPath(1).Contains(@":\"))
+            {
+                if (Data.GetPath(0) != Data.GetPath(1))
                 {
                     try
                     {
-                    Debug.WriteLine("COPY TEST BOOL"+this.test);
-                    this.test = !this.test;
-                    Debug.WriteLine("COPY TEST2 BOOL" + this.test);
+                        
+                        File.Copy(Data.GetPath(0), Data.GetPath(1));
+                        Debug.WriteLine("COPY COMPLETED");
 
-                    File.Copy(Data.GetPath(0), Data.GetPath(1));
-
-                    Debug.WriteLine("COPY COMPLETED");
-
-                }
-                catch(Exception e)
+                    }
+                    catch (Exception e)
                     {
                         Debug.WriteLine("Exception copy " + e.Message);
+                        ErrorSender("Copy Failed!");
                     }
-                
+
                 }
+            }
             
         }
 
         public void ControlCopy()
         {
             Debug.WriteLine("ControlCopy" );
-          
-                
+                if(!bIsNewDir)
+            {
                 int Target = (LastSelected + 1) % currentpath.Length;
                 ModelData Data = new ModelData(selectedpath[LastSelected],
-                    currentpath[Target] + Path.GetFileName(selectedpath[LastSelected]), LastSelected, Target);
+                   currentpath[Target] + Path.GetFileName(selectedpath[LastSelected]), LastSelected, Target);
 
                 Thread Copy = new Thread(this.Copy) { IsBackground = true };
                 Copy.Start(Data);
+            }
+               
             
                
             

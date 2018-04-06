@@ -30,9 +30,13 @@ namespace TotalCOmmanderLab03
 
         public delegate void evSelectedPathUpdate(int which, string path);
         public event evSelectedPathUpdate SelectedPathUpdate;
+        private List<UCTotalComanderView> listUCT;
+        
+
 
         public MainWIndow()
         {
+
 
             InitializeComponent();
 
@@ -48,6 +52,7 @@ namespace TotalCOmmanderLab03
                     uctcomponent.triggerReload += this.Reload;
                     uctcomponent.ReloadDrivers += this.DriversReload;
                     uctcomponent.ReSelect += this.ReSelect;
+                    listUCT.Add(uctcomponent);
                 }
                 else if (comp is UCCopyDeleteCut)
                 {
@@ -57,9 +62,28 @@ namespace TotalCOmmanderLab03
                 }
                 //Debug.WriteLine("Component initial {0}  {1}", uctcomponent.GetHashCode(), uctcomponent.GetType());
 
-
+                
             }
 
+        }
+
+        public void RefreshAll()
+        {
+            foreach (UserControl comp in this.Controls)
+            {
+                if(comp is UCTotalComanderView)
+                {
+                    var UTCC=comp as UCTotalComanderView;
+                    
+                     Debug.WriteLine(comp.TabIndex);
+                }
+                
+            }
+        }
+
+        public void ErrorShow(string e)
+        {
+            MessageBox.Show(e, "Error");
         }
 
         void onClick(short which)
@@ -88,7 +112,7 @@ namespace TotalCOmmanderLab03
         public void UpdateView(int which, string path, string[] dir, string[] files)
         {
 
-
+            
             //zwraca ten obiekt uctotalcomanderview ktory ma tabindex=which
             var UserControlTCV = this.Controls.OfType<UCTotalComanderView>().Where(c => c.TabIndex == which).First();
             UserControlTCV.Refresh(path, dir, files);

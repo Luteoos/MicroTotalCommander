@@ -31,9 +31,6 @@ namespace TotalCOmmanderLab03
             
             InitializeComponent();
 
-            
-
-
         }
 
   
