@@ -13,8 +13,23 @@ using System.Threading;
 
 namespace TotalCOmmanderLab03
 {
-    partial class UCTotalComanderView : UserControl,IPathProvier
+    partial class UCTotalComanderView : UserControl, IPathProvier
     {
+        private int index;
+        public int Index
+        {
+            get
+            {
+                return index;
+            }
+            set
+            {
+                index = value;
+            }
+        }
+        
+
+        
 
         public delegate void evReload(int TabIndex,string path);
         public event evReload triggerReload;//triggers reload function in Form1
@@ -55,7 +70,7 @@ namespace TotalCOmmanderLab03
             {
                 
                 // CurrentPath= drivers.SelectedItem.ToString();
-                triggerReload(this.TabIndex,drivers.SelectedItem.ToString());
+                triggerReload(this.Index,drivers.SelectedItem.ToString());
             }
             else
             {
@@ -87,7 +102,7 @@ namespace TotalCOmmanderLab03
             ListBox dirs = sender as ListBox;
             if (dirs.SelectedIndex >= 0)
             {
-               ReSelect(this.TabIndex, dirs.SelectedItem.ToString());
+               ReSelect(this.Index, dirs.SelectedItem.ToString());
             }
             else
             {
@@ -104,7 +119,7 @@ namespace TotalCOmmanderLab03
                 
                 if (drivers.SelectedIndex >= 0)
                 {
-                    triggerReload(this.TabIndex, drivers.SelectedItem.ToString());
+                    triggerReload(this.Index, drivers.SelectedItem.ToString());
 
                 }
                 else

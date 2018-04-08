@@ -71,17 +71,13 @@ namespace TotalCOmmanderLab03
         
 
         public void CurrentPathModify(int which,string path)//(path to update, which UCTotal..)
-            //DOROBIC FLAGE BOOL[] CZY NIE ZMIENILISMY WIDOKU PODCZAS KOPIOWANIA
         {
-            //Debug.WriteLine("Tu model");
-
+            Debug.WriteLine("PathModify" + which);
             if(path.Contains(@":\"))
             {
-                //LastSelected = -1;
                 selectedpath[which] = "";//clears selected path
                 currentpath[which] = "";
                 currentpath[which] = path;
-               // Debug.WriteLine("LOCK TEST" + currentpath[0]);
                 DirUpdate(which,currentpath[which],System.IO.Directory.GetDirectories(currentpath[which]),
                     System.IO.Directory.GetFiles(currentpath[which]));
                
@@ -135,6 +131,7 @@ namespace TotalCOmmanderLab03
             {
                 Debug.WriteLine("LOCK");
                 Thread.Sleep(100000000);
+
             }*/
             this.RunWorkerAsync();
             ModelData Data = data as ModelData;
@@ -151,13 +148,13 @@ namespace TotalCOmmanderLab03
                     }
                     catch (Exception e)
                     {
-                        Debug.WriteLine("Exception copy " + e.Message);
-                        ErrorSender("Copy Failed!");
+                        //Debug.WriteLine("Exception copy " + e.Message);
+                        ErrorSender("Copy Failed! "+e.Message);
                     }
 
                 }
             }
-            
+
         }
 
         public void ControlCopy()

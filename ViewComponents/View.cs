@@ -19,6 +19,10 @@ namespace TotalCOmmanderLab03
     partial class MainWIndow : Form
     {
         //List<UCTotalComanderView> ListControls;
+        #region Delegates
+        public delegate void _DRefreshAll();
+        public _DRefreshAll _RefreshAll;
+
         public delegate void evonClickUCButton(short which);
         public event evonClickUCButton onClickButtonUCC;
 
@@ -30,29 +34,29 @@ namespace TotalCOmmanderLab03
 
         public delegate void evSelectedPathUpdate(int which, string path);
         public event evSelectedPathUpdate SelectedPathUpdate;
-        private List<UCTotalComanderView> listUCT;
-        
+        //private List<UCTotalComanderView> listUCT;
+#endregion
+
 
 
         public MainWIndow()
         {
-
-
             InitializeComponent();
-
-            // Debug.WriteLine(ComponentCollection.ReferenceEquals(ucTotalComanderView1, ucTotalComanderView2));
-
-            //AADD METHOD HERE TO COUNT ALL UCTOTALCOMMANDERVIEW OBJECTS AND INITIALIZE SAME AMOUNT IN MODEL
+            int i = 0;
+            this._RefreshAll = this.RefreshAll;
             foreach (UserControl comp in this.Controls)
             {
                 
                 if (comp is UCTotalComanderView)
                 {
                     var uctcomponent = comp as UCTotalComanderView;
+                    uctcomponent.Index = i;
+
                     uctcomponent.triggerReload += this.Reload;
                     uctcomponent.ReloadDrivers += this.DriversReload;
                     uctcomponent.ReSelect += this.ReSelect;
-                    listUCT.Add(uctcomponent);
+
+                    i++;
                 }
                 else if (comp is UCCopyDeleteCut)
                 {
@@ -60,22 +64,20 @@ namespace TotalCOmmanderLab03
                     uccComponent.onClick += this.onClick;
 
                 }
-                //Debug.WriteLine("Component initial {0}  {1}", uctcomponent.GetHashCode(), uctcomponent.GetType());
-
-                
+                               
             }
 
         }
 
-        public void RefreshAll()
+        private void RefreshAll()
         {
             foreach (UserControl comp in this.Controls)
-            {
+            {         
                 if(comp is UCTotalComanderView)
                 {
                     var UTCC=comp as UCTotalComanderView;
+                    CurrentPathUpdate(UTCC.Index, UTCC.CurrentPath);
                     
-                     Debug.WriteLine(comp.TabIndex);
                 }
                 
             }
@@ -113,8 +115,8 @@ namespace TotalCOmmanderLab03
         {
 
             
-            //zwraca ten obiekt uctotalcomanderview ktory ma tabindex=which
-            var UserControlTCV = this.Controls.OfType<UCTotalComanderView>().Where(c => c.TabIndex == which).First();
+            //zwraca ten obiekt uctotalcomanderview ktory ma index=which
+            var UserControlTCV = this.Controls.OfType<UCTotalComanderView>().Where(c => c.Index == which).First();
             UserControlTCV.Refresh(path, dir, files);
 
 

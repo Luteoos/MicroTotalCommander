@@ -32,18 +32,6 @@ namespace TotalCOmmanderLab03
             view.onClickButtonUCC += this.ButtonDecide;
             model.RunWorkerCompleted += this.ThreadEnd;
             model.ErrorSender += this.ErrorManager;
-
-            
-
-
-
-            //nowa funkcja
-            //  Thread CopyThread = new Thread(model.Copy);
-            //  CopyThread.Start();
-            // if(CopyThread.ThreadState==0)
-
-
-
         }
       
         
@@ -60,9 +48,22 @@ namespace TotalCOmmanderLab03
 
         void ThreadEnd(object sender, RunWorkerCompletedEventArgs e)
         {
-            //Debug.WriteLine("COPY TEST3 BOOL" + model.test);
+            
+           // Debug.WriteLine("COPY TEST3 BOOL");
+            if (e.Error!=null)
+            {
+                ErrorManager(e.Error.Message);
+            }else if(e.Cancelled)
+            {
+                ErrorManager("Canceled!");
+            }
+            else
+            {
+                view.Invoke(view._RefreshAll);
+            }
+            
            
-            Debug.WriteLine("DZIALA INVOKEEEE" + e.Result);
+            
         }
 
         void SelectedPathUpdate(int which,string path)
