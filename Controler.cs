@@ -86,15 +86,8 @@ namespace TotalCOmmanderLab03
         }
         void ButtonDecide(short which)
         {
-            switch(which)
-            {
-                case 0:
-                    model.ControlCopy();                   
-                    break;
-            }
-           
-           
-            
+                    model.ControlCopy(which);                   
+
         }
         
 

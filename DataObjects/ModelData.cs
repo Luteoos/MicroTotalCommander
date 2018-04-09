@@ -10,7 +10,7 @@ namespace TotalCOmmanderLab03
     {
         private string[] Paths;
         private int[] Enum;
-        bool[]  bMustReload; 
+       // bool[]  bMustReload; 
 
         public ModelData(string source,string target, int src, int trgt )
         {

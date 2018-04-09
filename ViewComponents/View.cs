@@ -61,7 +61,7 @@ namespace TotalCOmmanderLab03
                 else if (comp is UCCopyDeleteCut)
                 {
                     UCCopyDeleteCut uccComponent = comp as UCCopyDeleteCut;
-                    uccComponent.onClick += this.onClick;
+                    uccComponent.onClick += this.OnClick;
 
                 }
                                
@@ -88,7 +88,7 @@ namespace TotalCOmmanderLab03
             MessageBox.Show(e, "Error");
         }
 
-        void onClick(short which)
+        void OnClick(short which)
         {
             onClickButtonUCC(which);
         }

@@ -157,7 +157,7 @@ namespace TotalCOmmanderLab03
 
         }
 
-        public void ControlCopy()
+        public void ControlCopy(short option)
         {
             Debug.WriteLine("ControlCopy" );
                 if(!bIsNewDir)
@@ -166,8 +166,15 @@ namespace TotalCOmmanderLab03
                 ModelData Data = new ModelData(selectedpath[LastSelected],
                    currentpath[Target] + Path.GetFileName(selectedpath[LastSelected]), LastSelected, Target);
 
-                Thread Copy = new Thread(this.Copy) { IsBackground = true };
-                Copy.Start(Data);
+                switch(option)
+                {
+                    case 0:
+                        Thread Copy = new Thread(this.Copy) { IsBackground = true };
+                        Copy.Start(Data);
+                        break;
+
+                }
+              
             }
                
             
