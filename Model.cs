@@ -145,7 +145,7 @@ namespace TotalCOmmanderLab03
                     catch (Exception e)
                     {
                         //Debug.WriteLine("Exception copy " + e.Message);
-                        ErrorSender("Copy Failed! "+e.Message+e.InnerException.Message);
+                        ErrorSender("Copy Failed! "+e.Message);
                     }
                 }
             }
@@ -163,6 +163,10 @@ namespace TotalCOmmanderLab03
                 {
                     ErrorSender("Delete Failed! " + e.Message);
                 }
+            }
+            else
+            {
+                ErrorSender("Wrong path!");
             }
         }
 
