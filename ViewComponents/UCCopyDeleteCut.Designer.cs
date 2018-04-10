@@ -28,46 +28,48 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.bCopy = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.Copy = new System.Windows.Forms.Button();
+            this.Move = new System.Windows.Forms.Button();
+            this.Delete = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // bCopy
+            // Copy
             // 
-            this.bCopy.Location = new System.Drawing.Point(4, 4);
-            this.bCopy.Name = "bCopy";
-            this.bCopy.Size = new System.Drawing.Size(111, 45);
-            this.bCopy.TabIndex = 0;
-            this.bCopy.Text = "Copy";
-            this.bCopy.UseVisualStyleBackColor = true;
-            this.bCopy.Click += new System.EventHandler(this.onClickButton);
+            this.Copy.Location = new System.Drawing.Point(4, 4);
+            this.Copy.Name = "Copy";
+            this.Copy.Size = new System.Drawing.Size(111, 45);
+            this.Copy.TabIndex = 0;
+            this.Copy.Text = "Copy";
+            this.Copy.UseVisualStyleBackColor = true;
+            this.Copy.Click += new System.EventHandler(this.onClickButton);
             // 
-            // button2
+            // Move
             // 
-            this.button2.Location = new System.Drawing.Point(121, 4);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(111, 45);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
+            this.Move.Location = new System.Drawing.Point(121, 4);
+            this.Move.Name = "Move";
+            this.Move.Size = new System.Drawing.Size(111, 45);
+            this.Move.TabIndex = 1;
+            this.Move.Text = "Move";
+            this.Move.UseVisualStyleBackColor = true;
+            this.Move.Click += new System.EventHandler(this.onClickButton);
             // 
-            // button3
+            // Delete
             // 
-            this.button3.Location = new System.Drawing.Point(238, 4);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(111, 45);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
+            this.Delete.Location = new System.Drawing.Point(238, 4);
+            this.Delete.Name = "Delete";
+            this.Delete.Size = new System.Drawing.Size(111, 45);
+            this.Delete.TabIndex = 2;
+            this.Delete.Text = "Delete";
+            this.Delete.UseVisualStyleBackColor = true;
+            this.Delete.Click += new System.EventHandler(this.onClickButton);
             // 
             // UCCopyDeleteCut
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.bCopy);
+            this.Controls.Add(this.Delete);
+            this.Controls.Add(this.Move);
+            this.Controls.Add(this.Copy);
             this.Name = "UCCopyDeleteCut";
             this.Size = new System.Drawing.Size(352, 54);
             this.ResumeLayout(false);
@@ -76,8 +78,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Button bCopy;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button Copy;
+        private System.Windows.Forms.Button Move;
+        private System.Windows.Forms.Button Delete;
     }
 }

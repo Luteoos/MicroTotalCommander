@@ -25,8 +25,14 @@ namespace TotalCOmmanderLab03
             Button button = sender as Button;
             switch(button.Name)
             {
-                case "bCopy":
+                case "Copy":
                     onClick(0);
+                    break;
+                case "Move":
+                    onClick(1);
+                    break;
+                case "Delete":
+                    onClick(2);
                     break;
 
             }
