@@ -30,7 +30,8 @@ namespace TotalCOmmanderLab03
             view.DriverUpdate += this.DriverUpdate;
             view.SelectedPathUpdate += this.SelectedPathUpdate;
             view.onClickButtonUCC += this.ButtonDecide;
-            model.RunWorkerCompleted += this.ThreadEnd;
+            // model.RunWorkerCompleted += this.ThreadEnd;
+            model.OperationComplete += this.ThreadEnd;
             model.ErrorSender += this.ErrorManager;
         }
       
@@ -46,25 +47,23 @@ namespace TotalCOmmanderLab03
 
         }
 
-        void ThreadEnd(object sender, RunWorkerCompletedEventArgs e)
+        void ThreadEnd(/*object sender, RunWorkerCompletedEventArgs e*/)
         {
-            
-           // Debug.WriteLine("COPY TEST3 BOOL");
-            if (e.Error!=null)
-            {
-                ErrorManager(e.Error.Message);
-            }else if(e.Cancelled)
-            {
-                ErrorManager("Canceled!");
-            }
-            else
-            {
-                view.Invoke(view._RefreshAll);
-            }
-            
-           
-            
+            view.Invoke(view._RefreshAll);
         }
+            // Debug.WriteLine("COPY TEST3 BOOL");
+            /* if (e.Error!=null)
+             {
+                 ErrorManager(e.Error.Message);
+             }else if(e.Cancelled)
+             {
+                 ErrorManager("Canceled!");
+             }
+             else
+             {*/
+
+            //  }
+        //}
 
         void SelectedPathUpdate(int which,string path)
         {
@@ -86,7 +85,7 @@ namespace TotalCOmmanderLab03
         }
         void ButtonDecide(short which)
         {
-                    model.ControlCopy(which);                   
+                    model.ControlOperation(which);                   
 
         }
         

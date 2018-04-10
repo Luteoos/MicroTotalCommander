@@ -13,7 +13,7 @@ using System.ComponentModel;
 
 namespace TotalCOmmanderLab03
 {
-     class Model:  BackgroundWorker, IModel
+     class Model: IModel //BackgroundWorker,
     {
         
         
@@ -28,6 +28,7 @@ namespace TotalCOmmanderLab03
         public event evDirUpdate DirUpdate;
 
         public event  Action<string> ErrorSender;
+        public event Action OperationComplete;
 
         //public delegate void evAfterCopyReload();
         //public event evAfterCopyReload ReloadAfterOperation;
@@ -133,7 +134,7 @@ namespace TotalCOmmanderLab03
                 Thread.Sleep(100000000);
 
             }*/
-            this.RunWorkerAsync();
+            //this.RunWorkerAsync();
             ModelData Data = data as ModelData;
             if (Data.GetPath(1).Contains(@":\"))
             {
@@ -141,9 +142,9 @@ namespace TotalCOmmanderLab03
                 {
                     try
                     {
-                        
-                        File.Copy(Data.GetPath(0), Data.GetPath(1));
                         Debug.WriteLine("COPY COMPLETED");
+                        File.Copy(Data.GetPath(0), Data.GetPath(1));
+                        OperationComplete();
 
                     }
                     catch (Exception e)
@@ -157,7 +158,7 @@ namespace TotalCOmmanderLab03
 
         }
 
-        public void ControlCopy(short option)
+        public void ControlOperation(short option)
         {
             Debug.WriteLine("ControlCopy" );
                 if(!bIsNewDir)
