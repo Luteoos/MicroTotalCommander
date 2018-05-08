@@ -7,10 +7,11 @@ using System.Windows.Forms;
 
 namespace TotalCOmmanderLab03
 {
-    //generic component of T count how mayn T components controls sended object
+    //generic component of T count how mayn T components in Controls, and type of U
     internal class ComponentCount<T,U>
     {
         private Control owner;
+
         public ComponentCount(Control owner)
         {
             this.owner = owner;
@@ -26,9 +27,9 @@ namespace TotalCOmmanderLab03
                 {
                     amount++;
                 }
-                
             }
             return amount;
         }
     }
+
 }

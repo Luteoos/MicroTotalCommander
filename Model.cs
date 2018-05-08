@@ -1,42 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
-using System.Windows.Forms;
 using System.Threading;
-using System.ComponentModel;
 
 
 
 namespace TotalCOmmanderLab03
 {
-     class Model: IModel //BackgroundWorker,
+    class Model: IModel
     {
-        
-        
+
         private string[] currentpath, selectedpath;
         private bool bIsNewDir=true;
         private int LastSelected;
-       // private bool flagCopy=false;
 
-        #region events
+        #region Delegates
         //(which UC haveto get it, path to directory, dirs in directory files in drectory)
         public delegate void evDirUpdate(int whichUC, string path,string[] a, string[] b);
         public event evDirUpdate DirUpdate;
 
         public event  Action<string> ErrorSender;
         public event Action OperationComplete;
-
-        //public delegate void evAfterCopyReload();
-        //public event evAfterCopyReload ReloadAfterOperation;
-
-
-#endregion
-
-        
+        #endregion
+      
         public Model()
         {    
            
@@ -44,12 +30,12 @@ namespace TotalCOmmanderLab03
 
         public void AmountPaths(short amount)
         {
-            Debug.WriteLine(amount + " TYLE SCIEZEK MOZLIWEYCH");
+            //Debug.WriteLine(amount + " TYLE SCIEZEK MOZLIWEYCH");
             currentpath = new string[amount];
             selectedpath = new string[amount];
         }
 
-         public string[] UpdateDriver()
+        public string[] UpdateDriver()
         {
             DriveInfo[] Infodrivers;
             string[] drivers;
@@ -69,35 +55,31 @@ namespace TotalCOmmanderLab03
             }
             return drivers;
         }
-        
 
         public void CurrentPathModify(int which,string path)//(path to update, which UCTotal..)
         {
-            Debug.WriteLine("PathModify" + which);
+            //Debug.WriteLine("PathModify" + which);
             if (!path.Equals(""))
             {
                 if (path.Contains(@":\"))
                 {
-                    selectedpath[which] = "";//clears selected path
+                    selectedpath[which] = "";
                     currentpath[which] = "";
                     currentpath[which] = path;
                     DirUpdate(which, currentpath[which], System.IO.Directory.GetDirectories(currentpath[which]),
                         System.IO.Directory.GetFiles(currentpath[which]));
-
-                    //tu pobiranie file i dirs i wysyalanie eventem do widoku
                 }
                 else
                 {
                     try
                     {
-
                         DirUpdate(which, currentpath[which] + path + @"\",
                             System.IO.Directory.GetDirectories(currentpath[which] + path),
                             System.IO.Directory.GetFiles(currentpath[which] + path));
 
                         bIsNewDir = true;
-                        currentpath[which] += path + @"\";//tu potem wczytanie plikow w tej lokacji i wyslanie ich do view
-                        selectedpath[which] = "";//clears selected after getting into dir
+                        currentpath[which] += path + @"\";
+                        selectedpath[which] = "";
                     }
                     catch (IOException)
                     {
@@ -106,27 +88,23 @@ namespace TotalCOmmanderLab03
                             Debug.WriteLine("model excpetion opening file" + currentpath[which]);
                             Process.Start(currentpath[which] + path);
                             bIsNewDir = false;
-
                         }
                         catch (System.ComponentModel.Win32Exception)
                         {
                             ErrorSender("Driver not found!");
-                            //MessageBox.Show("Drive not Found, choose another Drive","Error");
                         }
 
                     }
                 }
             }
-            //Debug.WriteLine("Model currentpath: "+currentpath[which]);        
         }    
         
-        public void SelectedPathModify(int which,string path)//trzyma selected path danego ucView
+        public void SelectedPathModify(int which,string path)
         {
             selectedpath[which] = currentpath[which] + path;
             LastSelected=which;
             bIsNewDir = false;
-
-            Debug.WriteLine("Model selectedd: " + selectedpath[which] + " " + which);
+            // Debug.WriteLine("Model selectedd: " + selectedpath[which] + " " + which);
         }
 
         private  void Copy(object data)//copies to next path
@@ -150,16 +128,19 @@ namespace TotalCOmmanderLab03
                 }
             }
         }
+
         private void Delete(object data)
         {
             ModelData Data = data as ModelData;
+            
             if (File.Exists(Data.GetPath(0)))
             {
                 try
                 {
                     File.Delete(Data.GetPath(0));
                     OperationComplete();
-                }catch(Exception e)
+                }
+                catch (Exception e)
                 {
                     ErrorSender("Delete Failed! " + e.Message);
                 }
@@ -173,6 +154,7 @@ namespace TotalCOmmanderLab03
         private void Move(object data)
         {
             ModelData Data = data as ModelData;
+
             if (Data.GetPath(1).Contains(@":\"))
             {
                 if (Data.GetPath(0) != Data.GetPath(1))
@@ -194,10 +176,10 @@ namespace TotalCOmmanderLab03
 
         public void ControlOperation(short option)
         {
-           // Debug.WriteLine("ControlCopy" );
-                if(!bIsNewDir)
+            if(!bIsNewDir)
             {
                 int Target = (LastSelected + 1) % currentpath.Length;
+
                 ModelData Data = new ModelData(selectedpath[LastSelected],
                    currentpath[Target] + Path.GetFileName(selectedpath[LastSelected]), LastSelected, Target);
 
@@ -215,30 +197,10 @@ namespace TotalCOmmanderLab03
                         Thread Delete = new Thread(this.Delete) { IsBackground = true };
                         Delete.Start(Data);
                         break;
-
-
                 }
               
             }
-               
-            
-               
-            
-            
-
         }
-
-       /* public int[] CopyReloadData()//[source,target]
-        {
-            int[] tabdata = new int[2];
-             tabdata[1]= (LastSelected + 1) % currentpath.Length; 
-             tabdata[0] = LastSelected;
-            return tabdata;
-
-        }
-        public string EHH(int i)
-        {
-            return currentpath[i];
-        }*/
     }
+
 }

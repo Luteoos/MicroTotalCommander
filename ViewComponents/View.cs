@@ -1,24 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+﻿using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
-using System.Diagnostics;
-
 
 
 namespace TotalCOmmanderLab03
 {
-
-
     partial class MainWIndow : Form
     {
-        //List<UCTotalComanderView> ListControls;
+
         #region Delegates
         public delegate void _DRefreshAll();
         public _DRefreshAll _RefreshAll;
@@ -34,10 +23,7 @@ namespace TotalCOmmanderLab03
 
         public delegate void evSelectedPathUpdate(int which, string path);
         public event evSelectedPathUpdate SelectedPathUpdate;
-        //private List<UCTotalComanderView> listUCT;
-#endregion
-
-
+        #endregion
 
         public MainWIndow()
         {
@@ -46,27 +32,23 @@ namespace TotalCOmmanderLab03
             this._RefreshAll = this.RefreshAll;
             foreach (UserControl comp in this.Controls)
             {
-                
                 if (comp is UCTotalComanderView)
                 {
                     var uctcomponent = comp as UCTotalComanderView;
+
                     uctcomponent.Index = i;
+                    i++;
 
                     uctcomponent.triggerReload += this.Reload;
                     uctcomponent.ReloadDrivers += this.DriversReload;
                     uctcomponent.ReSelect += this.ReSelect;
-
-                    i++;
                 }
                 else if (comp is UCCopyDeleteCut)
                 {
                     UCCopyDeleteCut uccComponent = comp as UCCopyDeleteCut;
                     uccComponent.onClick += this.OnClick;
-
                 }
-                               
             }
-
         }
 
         private void RefreshAll()
@@ -77,9 +59,7 @@ namespace TotalCOmmanderLab03
                 {
                     var UTCC=comp as UCTotalComanderView;
                     CurrentPathUpdate(UTCC.Index, UTCC.CurrentPath);
-                    
                 }
-                
             }
         }
 
@@ -95,31 +75,22 @@ namespace TotalCOmmanderLab03
 
         private void ReSelect(int TabIndex, string path)
         {
-
             SelectedPathUpdate(TabIndex, path);
-
         }
 
-        private void Reload(int TabIndex, string path)//zaleznie ktore okno wysyla to taki int przekazany dalej do control i model
+        private void Reload(int TabIndex, string path)
         {
             CurrentPathUpdate(TabIndex, path);
-
         }
         private string[] DriversReload(object sender)
         {
-
             return DriverUpdate();
         }
 
         public void UpdateView(int which, string path, string[] dir, string[] files)
         {
-
-            
-            //zwraca ten obiekt uctotalcomanderview ktory ma index=which
             var UserControlTCV = this.Controls.OfType<UCTotalComanderView>().Where(c => c.Index == which).First();
             UserControlTCV.Refresh(path, dir, files);
-
-
         }
 
         public short AmountOf<type,typeOfInputter>()
@@ -127,10 +98,7 @@ namespace TotalCOmmanderLab03
             ComponentCount<type,typeOfInputter> CompAmount = new ComponentCount<type,typeOfInputter>(this);
             return CompAmount.AmountOf();
         }
-
-        
-
-        
     }
+
 }
 

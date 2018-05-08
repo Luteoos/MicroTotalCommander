@@ -1,20 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
-using System.Threading;
 
 namespace TotalCOmmanderLab03
 {
     partial class UCTotalComanderView : UserControl, IPathProvier
     {
+
+#region Delegates
+        public delegate void evReload(int TabIndex, string path);
+        public event evReload triggerReload;
+
+        public delegate string[] evReloadDrivers(object sender);
+        public event evReloadDrivers ReloadDrivers;
+
+        public delegate void evReSelect(int TabIndex, string path);
+        public event evReSelect ReSelect;
+#endregion
+
         private int index;
         public int Index
         {
@@ -27,64 +31,43 @@ namespace TotalCOmmanderLab03
                 index = value;
             }
         }
-        
-
-        
-
-        public delegate void evReload(int TabIndex,string path);
-        public event evReload triggerReload;//triggers reload function in Form1
-        
-        public delegate string[] evReloadDrivers(object sender);
-        public event evReloadDrivers ReloadDrivers;//return string of drivers
-
-        public delegate void evReSelect( int TabIndex, string path);
-        public event evReSelect ReSelect;
-        
-            
+ 
         public UCTotalComanderView()
         {
-            
             InitializeComponent();
-
         }
-
   
-        public string CurrentPath//update textbox
+        public string CurrentPath
         {
             get
             {
                 return textPath.Text;
             }
-            set {
-                   textPath.Text =  value;
-               }
+            set
+            {
+                textPath.Text =  value;
+            }
         }
 
-        private void cbDrives_SelectedIndexChanged(object sender, EventArgs e)//wybiera litere dysku
+        private void cbDrives_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
             ComboBox drivers = sender as ComboBox;
-           // textPath.Text = "";//czysci text box, musi tak byc 
 
             if(drivers.SelectedIndex>=0)
             {
-                
-                // CurrentPath= drivers.SelectedItem.ToString();
                 triggerReload(this.Index,drivers.SelectedItem.ToString());
             }
             else
             {
-                
                 Debug.WriteLine("smth went wrong");
             }
-
         }
 
         public void Refresh(string path,string[] dataD,string[] dataF)
         {
-            Debug.WriteLine("refresh here");
             CurrentPath = path;
             listDrivesInclude.Items.Clear();
+
             for (int i = 0; i < dataD.Length; i++)
             {
                 listDrivesInclude.Items.Add(Path.GetFileName(dataD[i]));
@@ -93,26 +76,24 @@ namespace TotalCOmmanderLab03
             {
                 listDrivesInclude.Items.Add(Path.GetFileName(dataF[i]));
             }
-
         }
 
         private void listSelected(object sender, EventArgs e)//trigers on selection change
         {
-          
             ListBox dirs = sender as ListBox;
+
             if (dirs.SelectedIndex >= 0)
             {
                ReSelect(this.Index, dirs.SelectedItem.ToString());
             }
             else
             {
-                Debug.WriteLine("smth went wrong");
+               // Debug.WriteLine("smth went wrong");
             }
         }
 
-        private void listDrivesInclude_MouseDoubleClick(object sender, MouseEventArgs e)//doubleclick wrzuca wglad/otwiera
+        private void listDrivesInclude_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            
             if (sender is ListBox)
             {
                 ListBox drivers=sender as ListBox;
@@ -120,11 +101,10 @@ namespace TotalCOmmanderLab03
                 if (drivers.SelectedIndex >= 0)
                 {
                     triggerReload(this.Index, drivers.SelectedItem.ToString());
-
                 }
                 else
                 {
-                    Debug.WriteLine("smth went wrong");
+                   //Debug.WriteLine("smth went wrong");
                 }
             }
         }
@@ -133,16 +113,14 @@ namespace TotalCOmmanderLab03
         {
             ComboBox cbDrives = sender as ComboBox;
             string[] drivers;
+
             drivers= ReloadDrivers(this);
             if (drivers != null)
             {
                 cbDrives.Items.Clear();
                 cbDrives.Items.AddRange(drivers);
             }
-
         }
     }
-  
-    
-
+ 
 }

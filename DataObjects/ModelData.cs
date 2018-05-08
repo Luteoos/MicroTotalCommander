@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TotalCOmmanderLab03
+﻿namespace TotalCOmmanderLab03
 {
     sealed class ModelData
     {
-        private string[] Paths;
-        private int[] Enum;
-       // bool[]  bMustReload; 
+
+       static private string[] Paths;
+       static private int[] Enum;
 
         public ModelData(string source,string target, int src, int trgt )
         {
@@ -20,15 +14,17 @@ namespace TotalCOmmanderLab03
             Paths[1] = target;
             Enum[0] = src;
             Enum[1] = trgt;
-           // this.bMustReload = bMustReload;
         }
+
         public string GetPath(int i)
         {
             return Paths[i];
         }
+
         public int GetEnum(int i)
         {
             return Enum[i];
         }
     }
+
 }
